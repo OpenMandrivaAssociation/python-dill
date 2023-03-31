@@ -1,6 +1,6 @@
 Name:		python-dill
 Version:	0.3.6
-Release:	1
+Release:	2
 Source0:	https://files.pythonhosted.org/packages/source/d/dill/dill-%{version}.tar.gz
 Summary:	serialize all of python
 URL:		https://pypi.org/project/dill/
