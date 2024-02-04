@@ -1,5 +1,5 @@
 Name:		python-dill
-Version:	0.3.7
+Version:	0.3.8
 Release:	1
 Source0:	https://files.pythonhosted.org/packages/source/d/dill/dill-%{version}.tar.gz
 Summary:	serialize all of python
