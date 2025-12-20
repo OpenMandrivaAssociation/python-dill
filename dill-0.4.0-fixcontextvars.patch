@@ -1,0 +1,24 @@
+diff -urN dill-0.4.0/dill/_dill.py dill-0.4.0-fixcontextvars/dill/_dill.py
+--- dill-0.4.0/dill/_dill.py	2025-03-12 02:45:01.000000000 +0000
++++ dill-0.4.0-fixcontextvars/dill/_dill.py	2025-12-19 22:25:47.737515057 +0000
+@@ -54,6 +54,7 @@
+ import builtins as __builtin__
+ from pickle import _Pickler as StockPickler, Unpickler as StockUnpickler
+ from pickle import GLOBAL, POP
++from _contextvars import Context as ContextType
+ from _thread import LockType
+ from _thread import RLock as RLockType
+ try:
+@@ -2119,6 +2120,12 @@
+ else:
+     _testcapsule = None
+ 
++@register(ContextType)
++def save_context(pickler, obj):
++    logger.trace(pickler, "Cx: %s", obj)
++    pickler.save_reduce(ContextType, tuple(obj.items()), obj=obj)
++    logger.trace(pickler, "# Cx")
++
+ 
+ #############################
+ # A quick fix for issue #500
