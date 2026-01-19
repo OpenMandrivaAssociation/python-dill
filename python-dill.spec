@@ -1,15 +1,13 @@
 %define module dill
 
 Name:		python-dill
-Version:	0.4.0
+Version:	0.4.1
 Release:	1
-Summary:	serialize all of python
+Summary:	Serialize all of python
 License:	BSD-3-Clause
 Group:		Development/Python
 URL:		https://pypi.org/project/dill/
-Source0:	https://files.pythonhosted.org/packages/source/d/%{module}/%{module}-%{version}.tar.gz
-# Patch0 from https://github.com/uqfoundation/dill/commit/f77f84b5311be259bf0577f949d93471df332cb2
-Patch0:		dill-0.4.0-fixcontextvars.patch
+Source0:	https://files.pythonhosted.org/packages/source/d/%{module}/%{module}-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 
 BuildSystem:	python
 BuildArch:	noarch
@@ -17,7 +15,6 @@ BuildRequires:	python%{pyver}dist(objgraph)
 BuildRequires:	python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(setuptools)
 BuildRequires:	python%{pyver}dist(wheel)
-
 
 %description
 dill extends Python’s pickle module for serializing and de-serializing Python
@@ -29,6 +26,15 @@ converting a byte stream back to a Python object hierarchy.
 %autosetup -n %{module}-%{version} -p1
 # Remove bundled egg-info
 rm -rf %{module}.egg-info
+
+%install
+%py_install
+
+# Remove shebangs from (installed) non-script sources. The find-then-modify
+# pattern preserves mtimes on sources that did not need to be modified.
+find '%{buildroot}%{python3_sitelib}/dill' -type f -name '*.py' ! -perm /0111 \
+    -exec gawk '/^#!/ { print FILENAME }; { nextfile }' '{}' '+' |
+  xargs -r sed -r -i '1{/^#!/d}'
 
 %files
 %doc README.md
