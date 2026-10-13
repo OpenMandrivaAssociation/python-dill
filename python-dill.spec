@@ -2,7 +2,7 @@
 
 Name:		python-dill
 Version:	0.4.1
-Release:	1
+Release:	2
 Summary:	Serialize all of python
 License:	BSD-3-Clause
 Group:		Development/Python
